@@ -5,12 +5,18 @@ metadata:
     nginx.ingress.kubernetes.io/backend-protocol: HTTPS
     nginx.ingress.kubernetes.io/ssl-passthrough: "true"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: letsencrypt
+    external-dns.alpha.kubernetes.io/ingress-hostname-source: annotation-only
   name: ciso-assistant-{{ .Values.clientName }}
   labels:
     client: {{ .Values.clientName }}
     {{- include "common.labels" . | nindent 4 }}
 spec:
-  ingressClassName: nginx
+  ingressClassName: nginx-two
+  tls:
+  - hosts:
+    - {{ .Values.clientName }}.{{ .Values.clusterDomain }}
+    secretName: ciso-assistant-tls
   rules:
   - host: {{ .Values.clientName }}.{{ .Values.clusterDomain }}
     http:

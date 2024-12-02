@@ -32,13 +32,13 @@ spec:
         - name: EMAIL_HOST_PASSWORD
           valueFrom:
             secretKeyRef:
-              key: EMAIL_HOST_PASSWORD
-              name: smtp-out
+              name: {{ .Values.smtp.existingSecret | default "smtp-out" }}
+              key: {{ .Values.smtp.primaryPasswordKey | default "EMAIL_HOST_PASSWORD" }}
         - name: EMAIL_HOST_PASSWORD_RESCUE
           valueFrom:
             secretKeyRef:
-              key: EMAIL_HOST_PASSWORD_RESCUE
-              name: smtp-out
+              name: {{ .Values.smtp.existingSecret | default "smtp-out" }}
+              key: {{ .Values.smtp.rescuePasswordKey | default "EMAIL_HOST_PASSWORD_RESCUE" }}
         envFrom:
         - configMapRef:
             name: ciso-assistant-config
@@ -98,6 +98,11 @@ spec:
       - name: db-data
         persistentVolumeClaim:
           claimName: db-data
+      affinity:
+        nodeAffinity:
+          {{- toYaml .Values.nodeAffinity | nindent 10 }}
+      tolerations:
+        {{- toYaml .Values.tolerations | nindent 8 }}
   volumeClaimTemplates:
   - apiVersion: v1
     kind: PersistentVolumeClaim

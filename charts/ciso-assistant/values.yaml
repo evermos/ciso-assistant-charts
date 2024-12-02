@@ -42,3 +42,26 @@ image:
 persistence:
   size: 5Gi
   accessMode: ReadWriteOnce
+
+nodeAffinity:
+  # Example configuration, adjust as needed
+  requiredDuringSchedulingIgnoredDuringExecution:
+    nodeSelectorTerms:
+    - matchExpressions:
+      - key: nodeType
+        operator: In
+        values:
+        - application
+
+tolerations:
+  # Example configuration, adjust as needed
+  - key: "dedicated"
+    operator: "Equal"
+    value: "ciso-assistant"
+    effect: "NoSchedule"
+
+smtp:
+  # Option to use an existing secret instead of inline credentials
+  existingSecret: "smtp-credentials"
+  primaryPasswordKey: "primary-password"
+  rescuePasswordKey: "rescue-password"
