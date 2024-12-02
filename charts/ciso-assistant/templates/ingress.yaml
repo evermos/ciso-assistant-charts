@@ -12,7 +12,7 @@ metadata:
     client: {{ .Values.clientName }}
     {{- include "common.labels" . | nindent 4 }}
 spec:
-  ingressClassName: nginx-two
+  ingressClassName: {{ .Values.ingress.className | default "nginx" }}
   tls:
   - hosts:
     - {{ .Values.clientName }}.{{ .Values.clusterDomain }}

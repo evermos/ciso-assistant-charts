@@ -6,6 +6,9 @@ global:
   # Override appVersion from Chart.yaml if needed
   appVersion: "v1.9.3" # When empty, will use Chart.yaml's appVersion
 
+ingress:
+  className: nginx
+
 email:
   defaultFrom: no-reply@ciso-assistant.net
   debug: false
