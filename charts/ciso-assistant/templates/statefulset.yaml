@@ -22,6 +22,13 @@ spec:
     spec:
       containers:
       - name: ciso-assistant-backend
+        resources:
+          requests:
+            cpu: {{ .Values.resources.backend.requests.cpu | default "100m" }}
+            memory: {{ .Values.resources.backend.requests.memory | default "256Mi" }}
+          limits:
+            cpu: {{ .Values.resources.backend.limits.cpu | default "500m" }}
+            memory: {{ .Values.resources.backend.limits.memory | default "512Mi" }}
         env:
         - name: CISO_ASSISTANT_SUPERUSER_EMAIL
           value: {{ .Values.emailAdmin }}
@@ -51,6 +58,13 @@ spec:
         - mountPath: /code/db
           name: db-data
       - name: ciso-assistant-frontend
+        resources:
+          requests:
+            cpu: {{ .Values.resources.frontend.requests.cpu | default "50m" }}
+            memory: {{ .Values.resources.frontend.requests.memory | default "128Mi" }}
+          limits:
+            cpu: {{ .Values.resources.frontend.limits.cpu | default "250m" }}
+            memory: {{ .Values.resources.frontend.limits.memory | default "256Mi" }}
         env:
         - name: ORIGIN
           value: "{{ .Values.frontendOrigin | default (printf "https://%s.%s" .Values.clientName .Values.clusterDomain) }}"
@@ -65,6 +79,13 @@ spec:
         - containerPort: 3000
           protocol: TCP
       - name: caddy
+        resources:
+          requests:
+            cpu: {{ .Values.resources.caddy.requests.cpu | default "50m" }}
+            memory: {{ .Values.resources.caddy.requests.memory | default "64Mi" }}
+          limits:
+            cpu: {{ .Values.resources.caddy.limits.cpu | default "100m" }}
+            memory: {{ .Values.resources.caddy.limits.memory | default "128Mi" }}
         command:
         - sh
         - '-c'
