@@ -8,6 +8,7 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt
     external-dns.alpha.kubernetes.io/ingress-hostname-source: annotation-only
   name: ciso-assistant-{{ .Values.clientName }}
+  namespace: {{ .Values.global.namespace | default .Release.Namespace }}
   labels:
     client: {{ .Values.clientName }}
     {{- include "common.labels" . | nindent 4 }}

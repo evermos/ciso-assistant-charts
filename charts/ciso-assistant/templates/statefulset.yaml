@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: ciso-assistant-{{ .Values.clientName }}
+  namespace: {{ .Values.global.namespace | default .Release.Namespace }}
   labels:
     app: ciso-assistant
     client: {{ .Values.clientName }}
@@ -146,6 +147,7 @@ spec:
   - apiVersion: v1
     kind: PersistentVolumeClaim
     metadata:
+      namespace: {{ .Values.global.namespace | default .Release.Namespace }}
       labels:
         app: ciso-assistant
         client: {{ .Values.clientName }}
