@@ -26,9 +26,15 @@ spec:
           requests:
             cpu: {{ .Values.resources.backend.requests.cpu | default "100m" }}
             memory: {{ .Values.resources.backend.requests.memory | default "256Mi" }}
+          {{- if .Values.resources.backend.limits }}
           limits:
-            cpu: {{ .Values.resources.backend.limits.cpu | default "500m" }}
-            memory: {{ .Values.resources.backend.limits.memory | default "512Mi" }}
+            {{- if .Values.resources.backend.limits.cpu }}
+            cpu: {{ .Values.resources.backend.limits.cpu }}
+            {{- end }}
+            {{- if .Values.resources.backend.limits.memory }}
+            memory: {{ .Values.resources.backend.limits.memory }}
+            {{- end }}
+          {{- end }}
         env:
         - name: CISO_ASSISTANT_SUPERUSER_EMAIL
           value: {{ .Values.emailAdmin }}
@@ -62,9 +68,15 @@ spec:
           requests:
             cpu: {{ .Values.resources.frontend.requests.cpu | default "50m" }}
             memory: {{ .Values.resources.frontend.requests.memory | default "128Mi" }}
+          {{- if .Values.resources.frontend.limits }}
           limits:
-            cpu: {{ .Values.resources.frontend.limits.cpu | default "250m" }}
-            memory: {{ .Values.resources.frontend.limits.memory | default "256Mi" }}
+            {{- if .Values.resources.frontend.limits.cpu }}
+            cpu: {{ .Values.resources.frontend.limits.cpu }}
+            {{- end }}
+            {{- if .Values.resources.frontend.limits.memory }}
+            memory: {{ .Values.resources.frontend.limits.memory }}
+            {{- end }}
+          {{- end }}
         env:
         - name: ORIGIN
           value: "{{ .Values.frontendOrigin | default (printf "https://%s.%s" .Values.clientName .Values.clusterDomain) }}"
@@ -83,9 +95,15 @@ spec:
           requests:
             cpu: {{ .Values.resources.caddy.requests.cpu | default "50m" }}
             memory: {{ .Values.resources.caddy.requests.memory | default "64Mi" }}
+          {{- if .Values.resources.caddy.limits }}
           limits:
-            cpu: {{ .Values.resources.caddy.limits.cpu | default "100m" }}
-            memory: {{ .Values.resources.caddy.limits.memory | default "128Mi" }}
+            {{- if .Values.resources.caddy.limits.cpu }}
+            cpu: {{ .Values.resources.caddy.limits.cpu }}
+            {{- end }}
+            {{- if .Values.resources.caddy.limits.memory }}
+            memory: {{ .Values.resources.caddy.limits.memory }}
+            {{- end }}
+          {{- end }}
         command:
         - sh
         - '-c'
